@@ -1,0 +1,6 @@
+/.lake
+/rust/target
+/rust/fuzz/target
+/rust/fuzz/corpus
+/rust/fuzz/artifacts
+/rust/fuzz/coverage
