@@ -1,5 +1,3 @@
-# brainfuck_assignment
-
 This project contains the following:
 - A semantics for Brainfuck written in Lean, as well as formalizations of two
   example programs (modular addition and a trivial infinite loop) with
