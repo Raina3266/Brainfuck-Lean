@@ -258,33 +258,7 @@ developed by AWS used for defining access control rules. They have a Rust
 implementation, as well as a verified Lean implementation, and use differential
 fuzzing to assert that they give the same answer in all tested cases.
 
-## Time split
-
-The majority of the time was actually spent learning Lean. Before this
-assignment, I have never written Lean, or any functional programming language in
-fact!
-
-This covered basics of functional programming (immutable data, recursion over
-iteration, currying, etc.), as well as the logic/theory behind Lean
-(Curry-Howard Correspondence/"propositions-as-types", dependent type theory). I
-also spent some time learning some basic theorem proving, getting used to
-tactic mode, and using some basic tactics.
-
-For the actual assignment, I spent a few hours per day on it:
-- day 1: basic types: `Tape`, `State`, `Program` (and `parse`), etc.
-  - for much of this, I was still getting familiar with general programming in
-    Lean
-- day 2: `Transition` and `Transition.IsValid`, and some simple proofs
-  of (in)validitiy of trivial transitions, as well as proofs about the parser.
-- day 3-4: `Program.Execution` as well as trivial proofs. Also added `bf!` macro
-  and related.
-- day 5: `Examples` and most of the Rust code (I spent longer today, since the
-  Rust code is a lot less mentally-tiring since I'm very familiar with it, so it
-  felt quite relaxing).
-- day 6: The Lean interpreter and proofs against Lean semantics
-- day 7: Setting up fuzzing and cleanup
-
-### AI Usage
+## AI Usage
 
 I used AI heavily for this project. In particular, I used two different
 agents/models:
@@ -300,8 +274,6 @@ signatures - i.e. I understand *what the proof is claiming*. From there, I trust
 Lean that, since it compiles, the proof must be valid. I suspect there are
 possible improvements in readability/performance of the proofs, but I am not
 able to analyze that.
-
-
 
 [Cedar]: https://www.cedarpolicy.com/
 
