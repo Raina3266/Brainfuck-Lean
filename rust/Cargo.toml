@@ -3,9 +3,17 @@ name = "brainfuck"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = ["fuzzing"]  # makes rust-analyzer auto-complete `cfg(fuzzing)` stuff
+fuzzing = ["dep:serde", "dep:serde_json", "dep:arbitrary"]
+
 [dependencies]
-arbitrary = "1"
+arbitrary = { version = "1", optional = true }
 ariadne = "0.4"
 clap = { version = "4", features = ["derive"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+serde = { version = "1", features = ["derive"], optional = true }
+serde_json = { version = "1", optional = true }
+
+[[example]]
+name = "seeded_probe"
+required-features = ["fuzzing"]

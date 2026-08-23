@@ -1,3 +1,4 @@
+#[cfg(feature = "fuzzing")]
 use serde::{Deserialize, Serialize};
 use std::ops::Range;
 
@@ -16,23 +17,24 @@ impl AnalysisError {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "fuzzing", derive(Serialize, Deserialize))]
 pub enum Instr {
-    #[serde(rename = "+")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = "+"))]
     Inc,
-    #[serde(rename = "-")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = "-"))]
     Dec,
-    #[serde(rename = "<")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = "<"))]
     Left,
-    #[serde(rename = ">")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = ">"))]
     Right,
-    #[serde(rename = ",")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = ","))]
     Input,
-    #[serde(rename = ".")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = "."))]
     Output,
-    #[serde(rename = "[")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = "["))]
     BeginLoop,
-    #[serde(rename = "]")]
+    #[cfg_attr(feature = "fuzzing", serde(rename = "]"))]
     EndLoop,
 }
 

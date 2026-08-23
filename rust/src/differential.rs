@@ -115,7 +115,7 @@ pub fn compare(oracle: &mut OracleClient, case: &FuzzCase) -> std::io::Result<(V
         Err(_) => RustOutcome::ParseError,
         Ok(program) => {
             let start = Instant::now();
-            let result = interpreter::run_full(program, &case.input, Some(case.fuel));
+            let result = interpreter::run_full(program, &case.input, case.fuel);
             rust_elapsed = start.elapsed();
             match result {
                 Err(RunError::FuelExhausted) => RustOutcome::Fuel,
@@ -136,9 +136,9 @@ pub fn compare(oracle: &mut OracleClient, case: &FuzzCase) -> std::io::Result<(V
     */
     if verdict == Verdict::Agree {
         if let (RustOutcome::Halted(_), Ok(program)) = (&rust, &parsed) {
-            if interpreter::trace_len(program, &case.input, Some(case.fuel)) <= TRACE_STEP_LIMIT {
+            if interpreter::trace_len(program, &case.input, case.fuel) <= TRACE_STEP_LIMIT {
                 let (rust_trace, _) =
-                    interpreter::run_with_trace(program, &case.input, Some(case.fuel));
+                    interpreter::run_with_trace(program, &case.input, case.fuel);
                 let lean_traced = oracle.query(&OracleRequest {
                     program: &case.program,
                     input: &case.input,

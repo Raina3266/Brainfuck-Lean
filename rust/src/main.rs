@@ -111,17 +111,16 @@ fn run(args: RunArgs) -> Result<(), Box<dyn Error>> {
     };
 
     let input = parse_input(&args.input)?;
-    match interpreter::run(&program, &input, args.fuel) {
+    let fuel = args.fuel.unwrap_or(i64::MAX as u64);
+    match interpreter::run(&program, &input, fuel) {
         Ok(output) => {
             let rendered: Vec<String> = output.iter().map(u64::to_string).collect();
             println!("{}", rendered.join(" "));
             Ok(())
         }
-        Err(interpreter::RunError::FuelExhausted) => Err(format!(
-            "fuel exhausted after {} instructions",
-            args.fuel.unwrap_or(0)
-        )
-        .into()),
+        Err(interpreter::RunError::FuelExhausted) => {
+            Err(format!("fuel exhausted after {fuel} instructions").into())
+        }
     }
 }
 

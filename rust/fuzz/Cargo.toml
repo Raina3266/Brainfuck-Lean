@@ -13,6 +13,7 @@ libfuzzer-sys = "0.4"
 
 [dependencies.brainfuck]
 path = ".."
+features = ["fuzzing"]
 
 [[bin]]
 name = "differential"
