@@ -587,8 +587,8 @@ namespace Brainfuck
   -/
   theorem Fragment.ExecutionList.deterministic
       {fs : List Fragment} {s s₁ s₂ : State}
-      (h₁ : ExecutionList fs s s₁) 
-      (h₂ : ExecutionList fs s s₂) 
+      (h₁ : ExecutionList fs s s₁)
+      (h₂ : ExecutionList fs s s₂)
       : s₁ = s₂ := by
     induction h₁ generalizing s₂ with
     | nil =>

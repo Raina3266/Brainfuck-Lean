@@ -16,7 +16,12 @@ charon cargo --preset=aeneas \
   --start-from crate::interpreter::run_full \
   --dest-file "$out/brainfuck_core.llbc" \
   -- --lib --no-default-features
-aeneas -backend lean "$out/brainfuck_core.llbc" -dest "$out"
+aeneas -backend lean -split-files "$out/brainfuck_core.llbc" -dest "$out"
 
-cp "$out/BrainfuckCore.lean" "$root/BrainfuckCore.lean"
-echo "regenerated $root/BrainfuckCore.lean"
+# Only Types.lean and Funs.lean are generated; the *External.lean files are
+# hand-written models of the std leaves. The templates are copied alongside
+# so signature changes show up in the diff.
+cp "$out/Types.lean" "$out/Funs.lean" "$root/BrainfuckCore/"
+cp "$out/TypesExternal_Template.lean" "$out/FunsExternal_Template.lean" \
+  "$root/BrainfuckCore/"
+echo "regenerated $root/BrainfuckCore/{Types,Funs}.lean"

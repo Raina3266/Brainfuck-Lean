@@ -27,6 +27,9 @@ lean_lib «Brainfuck» where
 /-- The Aeneas-generated pure model of the Rust interpreter. -/
 lean_lib «BrainfuckCore» where
 
+/-- The bridge proofs between `Brainfuck` and `BrainfuckCore`. -/
+lean_lib «Verification» where
+
 lean_exe oracle where
   root      := `Oracle
   buildType := .release

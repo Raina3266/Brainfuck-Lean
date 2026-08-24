@@ -240,6 +240,59 @@ namespace Brainfuck
     @[simp] theorem getElem_nat_eq_read (t : Tape) (n : Nat) : t[n] = t.read n := by
       rfl
 
+    /--
+      The tape with `left`/`right` around `cur`, nearest-the-head-first
+      (cells beyond the lists are zero). The public counterpart of the
+      private zipper representation, for building tapes from concrete
+      lists (e.g. abstraction functions in verification code).
+    -/
+    def ofParts (left : List Cell) (cur : Cell) (right : List Cell) : Tape :=
+      RawTape.toTape { left := left, cur := cur, right := right }
+
+    @[simp] theorem read_ofParts_zero (l : List Cell) (c : Cell) (r : List Cell) :
+        (ofParts l c r).read 0 = c := by
+      rfl
+
+    @[simp] theorem read_ofParts_pos (l : List Cell) (c : Cell) (r : List Cell) (n : Nat) :
+        (ofParts l c r).read (Int.ofNat (n + 1)) = r.getD n 0 := by
+      rfl
+
+    @[simp] theorem read_ofParts_neg (l : List Cell) (c : Cell) (r : List Cell) (n : Nat) :
+        (ofParts l c r).read (Int.negSucc n) = l.getD n 0 := by
+      rfl
+
+    /-- Drop trailing zeros from a cell list (public face of the
+    canonicalization used by `toParts` and serialization). -/
+    def trimZeros : List Cell -> List Cell :=
+      RawTape.trimZeros
+
+    @[simp] theorem trimZeros_nil : trimZeros [] = [] := by
+      rfl
+
+    theorem trimZeros_cons (c : Cell) (rest : List Cell) :
+        trimZeros (c :: rest) =
+          match trimZeros rest with
+          | [] => if c = 0 then [] else [c]
+          | trimmed => c :: trimmed := by
+      rfl
+
+    /--
+      The canonical parts of a tape: `left`/`right` nearest-the-head-first
+      with trailing zeros trimmed. Well-defined on the quotient because
+      equivalent zippers normalize identically.
+    -/
+    def toParts (t : Tape) : List Cell × Cell × List Cell :=
+      Quotient.lift
+        (fun raw => ((raw.normalize).left, (raw.normalize).cur, (raw.normalize).right))
+        (by
+          intro a b hab
+          simp [RawTape.normalize_eq_of_read_eq hab])
+        t
+
+    @[simp] theorem toParts_ofParts (l : List Cell) (c : Cell) (r : List Cell) :
+        toParts (ofParts l c r) = (trimZeros l, c, trimZeros r) := by
+      rfl
+
     /-- The cell under the head. -/
     def current (t : Tape) : Cell :=
       t.read 0
